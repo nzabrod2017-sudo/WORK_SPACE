@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101725">
+<title>Partner Desk</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg:#101725; --panel:#192437; --line:#34445d;
+  --text:#edf2fa; --muted:#aebdd3; --accent:#cbdcff;
+  --active:#263955;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body {
+  margin:0; background:var(--bg); color:var(--text);
+  font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+button,input { font:inherit; }
+button { cursor:pointer; touch-action:manipulation; }
+header {
+  height:70px; padding:0 24px; display:flex; align-items:center;
+  gap:16px; border-bottom:1px solid var(--line);
+  background:var(--bg); position:sticky; top:0; z-index:20;
+}
+.brand { font-size:20px; font-weight:750; white-space:nowrap; }
+.brand span { color:var(--accent); }
+.header-sub { color:var(--muted); font-size:13px; }
+.search { margin-left:auto; width:min(420px,45vw); }
+input {
+  width:100%; min-height:43px; padding:10px 13px;
+  color:var(--text); background:var(--panel);
+  border:1px solid var(--line); border-radius:10px; outline:none;
+}
+input:focus { border-color:var(--accent); }
+.layout {
+  display:grid; grid-template-columns:245px minmax(0,1fr);
+  min-height:calc(100vh - 70px);
+}
+.sidebar {
+  padding:24px 14px; border-right:1px solid var(--line);
+  background:#131d2d; position:sticky; top:70px;
+  height:calc(100vh - 70px); overflow-y:auto;
+}
+.side-label {
+  color:var(--muted); font-size:11px; font-weight:750;
+  letter-spacing:1px; padding:0 12px; margin-bottom:14px;
+}
+.nav-btn {
+  display:flex; align-items:center; gap:11px; width:100%;
+  text-align:left; border:1px solid transparent; border-radius:10px;
+  padding:12px 11px; margin:4px 0; color:var(--text);
+  background:transparent; font-size:14px;
+}
+.nav-btn:hover { background:var(--panel); }
+.nav-btn.active { background:var(--active); border-color:#435b7c; }
+.nav-icon { width:23px; text-align:center; font-size:17px; }
+.nav-count { margin-left:auto; color:var(--muted); font-size:12px; }
+main { min-width:0; padding:30px clamp(18px,3.5vw,48px); max-width:1200px; width:100%; }
+.page-heading {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  gap:15px; margin-bottom:28px;
+}
+h1 { margin:0 0 6px; font-size:27px; line-height:1.25; }
+.subtitle { margin:0; color:var(--muted); font-size:14px; }
+.result-count { color:var(--muted); font-size:12px; white-space:nowrap; padding-top:8px; }
+.mini-section { margin:0 0 30px; scroll-margin-top:90px; }
+.mini-heading {
+  display:flex; align-items:center; gap:10px; margin:0 0 13px;
+  font-size:13px; letter-spacing:.65px; text-transform:uppercase;
+  color:#c3d4ee; font-weight:750;
+}
+.mini-heading:after { content:""; height:1px; flex:1; background:var(--line); }
+.cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.card {
+  min-width:0; background:var(--panel); border:1px solid #29384f;
+  border-radius:13px; padding:16px; display:flex; flex-direction:column;
+}
+.card h3 { margin:0 0 12px; font-size:15px; line-height:1.4; }
+.message {
+  margin:0 0 16px; white-space:pre-wrap; overflow-wrap:anywhere;
+  color:#e1e9f5; font-size:14px; line-height:1.7; flex:1;
+}
+.copy {
+  align-self:flex-start; width:auto; min-height:39px; padding:8px 12px;
+  border:1px solid #536782; border-radius:8px;
+  background:#263955; color:#f1f5fc; font-size:12px; font-weight:650;
+}
+.copy:hover { background:#334968; }
+.notice { min-height:0; margin:7px 0 0; color:#a9c9ff; font-size:12px; }
+.notice:empty { display:none; }
+.empty {
+  color:var(--muted); text-align:center; padding:35px 15px;
+  border:1px dashed var(--line); border-radius:12px;
+}
+.workflow {
+  background:var(--panel); border:1px solid #29384f;
+  border-radius:13px; padding:20px;
+}
+.workflow ol { margin:0; padding-left:22px; }
+.workflow li { margin:0 0 12px; }
+.workflow li:last-child { margin-bottom:0; }
+footer { color:var(--muted); font-size:12px; padding:28px 0 8px; }
+[hidden] { display:none !important; }
+
+@media(max-width:900px) {
+  .layout { grid-template-columns:205px minmax(0,1fr); }
+  .cards { grid-template-columns:minmax(0,1fr); }
+  main { padding:25px 20px; }
+}
+@media(max-width:650px) {
+  header {
+    height:auto; min-height:62px; padding:12px;
+    display:grid; grid-template-columns:1fr; gap:10px;
+  }
+  .brand { font-size:19px; }
+  .header-sub { display:none; }
+  .search { margin:0; width:100%; }
+  .layout { display:block; }
+  .sidebar {
+    position:sticky; top:112px; z-index:15; height:auto;
+    padding:9px; border-right:0; border-bottom:1px solid var(--line);
+    display:flex; gap:7px; overflow-x:auto; white-space:nowrap;
+    -webkit-overflow-scrolling:touch;
+  }
+  .side-label { display:none; }
+  .nav-btn {
+    width:auto; flex:0 0 auto; margin:0; padding:9px 11px;
+    font-size:12px; border-color:var(--line); gap:7px;
+  }
+  .nav-icon { display:none; }
+  .nav-count { margin-left:0; }
+  main { padding:22px 12px; }
+  .page-heading { margin-bottom:22px; }
+  h1 { font-size:23px; }
+  .result-count { display:none; }
+  .cards { grid-template-columns:minmax(0,1fr); gap:10px; }
+  .card { padding:15px; }
+  .copy { min-height:43px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="brand">Partner <span>Desk</span></div>
+    <div class="header-sub">Сценарии диалогов и шаблоны сообщений</div>
+  </div>
+  <div class="search">
+    <input id="search" type="search" placeholder="Поиск по всем разделам..." aria-label="Поиск">
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="side-label">РАЗДЕЛЫ</div>
+  </aside>
+  <main id="main"></main>
+</div>
+
+<script>
+const sections = [
+{
+ id:"first", icon:"✉️", title:"Первый контакт",
+ subtitle:"Первое сообщение в зависимости от тематики канала",
+ groups:[
+  {title:"Выбор сценария",items:[
+   ["Автор трейдинг-канала","Привет! Посмотрел твой канал, хотел предложить обсудить сотрудничество. Мы развиваем трейдинговое направление и сейчас расширяем партнёрскую сеть. Думаю, можем найти формат, который будет интересен обеим сторонам. Подскажи, ты сейчас рассматриваешь новые партнёрства?"],
+   ["Финансовый эксперт","Привет! Обратил внимание на твой контент в финансовой тематике. Представляю трейдинговый проект, в рамках которого сейчас развиваем партнёрское направление. Хотел бы обсудить возможное сотрудничество с тобой. Открыт к новым партнёрским предложениям?"],
+   ["Автор канала другой тематики","Привет! Пишу по поводу потенциального сотрудничества. Мы развиваем проект в сфере трейдинга и сейчас рассматриваем партнёрства с авторами каналов. Есть предложение по модели вознаграждения за привлечённых клиентов. Если тебе интересно рассмотреть новое направление, могу коротко рассказать детали."]
+  ]}
+ ]
+},
+{
+ id:"replies", icon:"💬", title:"Ответы и реакции",
+ subtitle:"Ответы на вопросы, интерес и возражения",
+ groups:[
+  {title:"Интерес к предложению",items:[
+   ["«Да, интересно»","Отлично! Мы развиваем трейдинговый клуб с торговыми сигналами и партнёрскую сеть. Сотрудничество предполагает вознаграждение за привлечённых клиентов по партнёрской программе FxPro. Можем обсудить критерии начисления, формат и порядок выплат. У тебя уже был опыт подобного партнёрства?"],
+   ["«Что за предложение?»","Предлагаю обсудить сотрудничество с нашим трейдинговым направлением. У нас есть клуб с торговыми сигналами и партнёрская модель для авторов. Вознаграждение зависит от условий брокерской программы. Могу рассказать, как устроены ставка, критерии, отслеживание клиентов и график выплат."],
+   ["«Мне нужно просто разместить рекламу?»","Формат можно подобрать под твою аудиторию: например, публикация или другой согласованный формат. До запуска обсудим правила размещения, отслеживание переходов и вознаграждение. Важно корректно описывать предложение и не обещать аудитории гарантированный доход от торговли."],
+   ["«Скинь информацию, посмотрю»","Конечно, отправлю основные сведения о проекте и партнёрской модели: формат сотрудничества, критерии начисления вознаграждения, отслеживание клиентов и сроки выплат. Посмотри в удобное время, а если появятся вопросы — обсудим без спешки."]
+  ]},
+  {title:"Условия и вознаграждение",items:[
+   ["«Какие условия?»","Условия зависят от программы FxPro и согласованной модели сотрудничества. Перед запуском можно зафиксировать размер вознаграждения, критерии его начисления, способ отслеживания привлечённых клиентов и график выплат. Все детали согласуем заранее, чтобы условия были понятны обеим сторонам."],
+   ["«Сколько я буду зарабатывать?»","Это зависит от количества привлечённых клиентов и правил начисления вознаграждения. Гарантировать конкретную сумму заранее нельзя, но можно разобрать несколько примерных сценариев на основе согласованных условий, чтобы ты понимал возможный диапазон и от чего он зависит."],
+   ["«Почему выплата зависит от торгового объёма?»","В некоторых партнёрских программах критерии вознаграждения связаны с условиями брокера, включая квалифицируемый торговый объём. До начала сотрудничества важно уточнить все правила и порядок расчёта. Клиентам не стоит рекомендовать совершать сделки только ради увеличения объёма: торговые решения должны учитывать финансовые риски."]
+  ]},
+  {title:"Возражения и отказ",items:[
+   ["«У меня уже есть партнёры»","Понимаю. Если тебе интересно сравнить условия, можем спокойно обсудить наше предложение — без обязательств. Если сейчас всё устраивает и новые варианты не нужны, тоже без проблем. Спасибо, что ответил!"],
+   ["«Неинтересно»","Понял, спасибо, что ответил! Не буду отвлекать повторными сообщениями. Если в будущем захочешь вернуться к вопросу сотрудничества, буду на связи. Хорошего дня!"],
+   ["«А вы кто вообще?»","Я представляю проект в сфере трейдинга: у нас есть клуб с торговыми сигналами и партнёрское направление для авторов и владельцев каналов. Могу подробнее рассказать, как устроен проект, какие есть форматы сотрудничества и по каким правилам начисляется вознаграждение."]
+  ]}
+ ]
+},
+{
+ id:"followup", icon:"🔔", title:"Напоминания",
+ subtitle:"Повторный контакт без давления",
+ groups:[
+  {title:"Повторное сообщение",items:[
+   ["Первое напоминание · через 2–3 рабочих дня","Привет! Возвращаюсь к своему предложению по партнёрству — возможно, сообщение затерялось. Если направление актуально, могу отправить основные условия, чтобы ты мог оценить, насколько сотрудничество тебе подходит."],
+   ["Последнее напоминание","Привет! Последний раз вернусь к вопросу сотрудничества, чтобы не отвлекать тебя повторными сообщениями. Если сейчас неактуально, всё в порядке. Если захочешь рассмотреть предложение позже, буду на связи."]
+  ]}
+ ]
+},
+{
+ id:"next", icon:"➡️", title:"Следующий шаг",
+ subtitle:"Переход к обсуждению конкретных условий",
+ groups:[
+  {title:"Согласование сотрудничества",items:[
+   ["Переход к конкретным условиям","Предлагаю тогда перейти к конкретике. Я подготовлю условия партнёрства, включая механику привлечения клиентов, критерии начисления вознаграждения и порядок выплат. С твоей стороны сможем обсудить аудиторию и подходящий формат сотрудничества. После согласования условий сможем определить дальнейшие шаги и запуск."]
+  ]}
+ ]
+},
+{
+ id:"workflow", icon:"📋", title:"Алгоритм",
+ subtitle:"Порядок работы менеджера",
+ groups:[
+  {title:"Последовательность действий",workflow:[
+   "Отправить первое сообщение с учётом тематики канала.",
+   "Уточнить интерес и ответить на вопросы партнёра.",
+   "Обсудить условия: ставку, критерии, отслеживание и график выплат.",
+   "Согласовать формат публикации и дальнейшие шаги.",
+   "Не обещать гарантированный доход от торговли и не скрывать существенные условия партнёрской программы."
+  ]}
+ ]
+}
+];
+
+let activeId = "first";
+const sidebar = document.getElementById("sidebar");
+const main = document.getElementById("main");
+const search = document.getElementById("search");
+
+function allText(section) {
+ return (section.title+" "+section.subtitle+" "+section.groups.map(g=>
+  g.title+" "+(g.items||[]).map(x=>x[0]+" "+x[1]).join(" ")+" "+(g.workflow||[]).join(" ")
+ ).join(" ")).toLocaleLowerCase("ru");
+}
+function renderSidebar() {
+ sidebar.innerHTML='<div class="side-label">РАЗДЕЛЫ</div>';
+ sections.forEach(s=>{
+  const b=document.createElement("button");
+  b.className="nav-btn"+(s.id===activeId?" active":"");
+  b.type="button";
+  const count=s.groups.reduce((n,g)=>n+(g.items?g.items.length:(g.workflow?1:0)),0);
+  b.innerHTML='<span class="nav-icon">'+s.icon+'</span><span>'+s.title+'</span><span class="nav-count">'+count+'</span>';
+  b.setAttribute("aria-current",s.id===activeId?"page":"false");
+  b.onclick=()=>{
+   activeId=s.id; search.value=""; renderSidebar(); renderMain();
+   window.scrollTo({top:0,behavior:"smooth"});
+  };
+  sidebar.appendChild(b);
+ });
+}
+function copyButton(text,notice) {
+ const b=document.createElement("button");
+ b.type="button"; b.className="copy"; b.textContent="⧉ Скопировать сообщение";
+ b.onclick=async()=>{
+  try {
+   if(navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+   } else {
+    const t=document.createElement("textarea");
+    t.value=text; t.setAttribute("readonly","");
+    Object.assign(t.style,{position:"fixed",left:"-9999px",top:"0"});
+    document.body.appendChild(t); t.select();
+    const ok=document.execCommand("copy"); t.remove();
+    if(!ok) throw Error("copy failed");
+   }
+   notice.textContent="Скопировано!";
+  } catch {
+   notice.textContent="Не удалось скопировать в этом режиме. Нажми и удерживай текст, чтобы скопировать вручную.";
+  }
+  b.textContent=notice.textContent==="Скопировано!"?"✓ Скопировано":"⧉ Скопировать сообщение";
+  setTimeout(()=>{b.textContent="⧉ Скопировать сообщение";notice.textContent="";},2200);
+ };
+ return b;
+}
+function renderMain() {
+ const q=search.value.trim().toLocaleLowerCase("ru");
+ const s=sections.find(x=>x.id===activeId);
+ main.innerHTML="";
+ const heading=document.createElement("div"); heading.className="page-heading";
+ const left=document.createElement("div");
+ const h=document.createElement("h1"); h.textContent=s.title;
+ const sub=document.createElement("p"); sub.className="subtitle"; sub.textContent=s.subtitle;
+ left.append(h,sub);
+ const count=document.createElement("div"); count.className="result-count";
+ heading.append(left,count); main.appendChild(heading);
+ let visibleCount=0;
+ s.groups.forEach(g=>{
+  const items=(g.items||[]).filter(item=>!q||(g.title+" "+item[0]+" "+item[1]).toLocaleLowerCase("ru").includes(q));
+  const workflowMatches=(g.workflow||[]).filter(x=>!q||(g.title+" "+x).toLocaleLowerCase("ru").includes(q));
+  if(!items.length&&!workflowMatches.length)return;
+  const section=document.createElement("section"); section.className="mini-section";
+  const title=document.createElement("h2"); title.className="mini-heading"; title.textContent=g.title;
+  section.appendChild(title);
+  if(g.items) {
+   const cards=document.createElement("div"); cards.className="cards";
+   items.forEach(item=>{
+    visibleCount++;
+    const card=document.createElement("article"); card.className="card";
+    const name=document.createElement("h3"); name.textContent=item[0];
+    const message=document.createElement("p"); message.className="message"; message.textContent=item[1];
+    const notice=document.createElement("p"); notice.className="notice"; notice.setAttribute("aria-live","polite");
+    card.append(name,message,copyButton(item[1],notice),notice); cards.appendChild(card);
+   });
+   section.appendChild(cards);
+  }
+  if(g.workflow) {
+   visibleCount++;
+   const box=document.createElement("div"); box.className="workflow";
+   const ol=document.createElement("ol");
+   workflowMatches.forEach(x=>{const li=document.createElement("li");li.textContent=x;ol.appendChild(li);});
+   box.appendChild(ol);section.appendChild(box);
+  }
+  main.appendChild(section);
+ });
+ count.textContent=visibleCount+" "+(visibleCount===1?"шаблон":visibleCount<5?"шаблона":"шаблонов");
+ if(!visibleCount) {
+  const empty=document.createElement("div"); empty.className="empty";
+  empty.textContent="Ничего не найдено. Попробуй изменить запрос или выбрать другой раздел.";
+  main.appendChild(empty);
+ }
+ const footer=document.createElement("footer");
+ footer.textContent="Автономная страница · Все сообщения хранятся в этом HTML-файле";
+ main.appendChild(footer);
+}
+search.addEventListener("input",()=>{
+ const q=search.value.trim().toLocaleLowerCase("ru");
+ if(q) {
+  const current=sections.find(s=>s.id===activeId);
+  if(!current||!allText(current).includes(q)) {
+   const found=sections.find(s=>allText(s).includes(q));
+   if(found) {activeId=found.id;renderSidebar();}
+  }
+ }
+ renderMain();
+});
+renderSidebar();
+renderMain();
+</script>
+</body>
+</html>
